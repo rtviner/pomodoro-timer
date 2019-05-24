@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
     render () {
         return (
-            <h2>HELLO</h2>
+            <h1>Pomodoro Clock</h1>
         );
     }
 }
