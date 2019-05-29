@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const INTERVALS = ["break", "session"];
+const INTERVALS = [
+    { name: "Break", defaultTime: "5" },
+    { name: "Session", defaultTime: "25" }
+];
+
 
 class App extends React.Component {
     render () {
@@ -23,15 +27,15 @@ const SetTimeButton = ({ id, text }) => (
 const Timers = ({ intervals, time }) => (
     <div className="interaction">
         {intervals.map(interval => (
-            <div className="timer" id={`${interval}-label`}>
-                <h2>{`${interval.toUpperCase()} Length`}</h2>
+            <div className="timer" id={`${interval.name.toLowerCase()}-label`}>
+                <h2>{`${interval.name} Length`}</h2>
                 <SetTimeButton
-                    id={`${interval}-decrement`}
+                    id={`${interval.name.toLowerCase()}-decrement`}
                     text="<"
                 />
-                <div id={`${interval}-length`}> {time} </div>
+                <div id={`${interval.name.toLowerCase()}-length`}> {interval.defaultTime} </div>
                 <SetTimeButton
-                    id={`${interval}-increment`}
+                    id={`${interval.name.toLowerCase()}-increment`}
                     text=">"
                 />
             </div>
