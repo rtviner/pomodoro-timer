@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
@@ -8,7 +8,6 @@ const INTERVALS = [
     { name: "break", defaultTime: "5" },
     { name: "session", defaultTime: "25" }
 ];
-
 
 class App extends React.Component {
     render () {
@@ -27,10 +26,15 @@ const SetTimeButton = ({ id, text }) => (
     </button>
 );
 
+SetTimeButton.propTypes = {
+    id: PropTypes.string,
+    text: PropTypes.string
+};
+
 const Timers = ({ intervals }) => (
     <div className="interaction">
         {intervals.map(interval => (
-            <div className="timer" id={`${interval.name}-label`}>
+            <div key={interval.name} className="timer" id={`${interval.name}-label`}>
                 <h2>{interval.name.toUpperCase()}</h2>
                 <SetTimeButton
                     id={`${interval.name}-decrement`}
@@ -46,8 +50,12 @@ const Timers = ({ intervals }) => (
     </div>
 );
 
-const MainDisplay = ({ intervalName, count, time }) => (
-    <div mainDisplay>
+Timers.propTypes = {
+    intervals: PropTypes.array
+};
+
+const CountAndTimeDisplay = ({ intervalName, count, time }) => (
+    <div id="count-time-display">
         <h2
             id="timer-label"
         >
@@ -61,6 +69,12 @@ const MainDisplay = ({ intervalName, count, time }) => (
         </h3>
     </div>
 );
+
+CountAndTimeDisplay.propTypes = {
+    intervalName: PropTypes.string,
+    count: PropTypes.string,
+    time: PropTypes.string
+};
 
 const Controls = () => (
     <div>
@@ -78,13 +92,14 @@ const Controls = () => (
     </div>
 );
 
+
 const PomodoroClock = ({ intervals, intervalName, count, time }) => (
     <div id="clock">
         <h1>Pomodoro Clock</h1>
         <Timers
             intervals={INTERVALS}
         />
-        <MainDisplay
+        <CountAndTimeDisplay
             intervalName="Session"
             count="0"
             time="25:00"
@@ -92,5 +107,12 @@ const PomodoroClock = ({ intervals, intervalName, count, time }) => (
         <Controls />
     </div>
 );
+
+PomodoroClock.propTypes = {
+    intervals: PropTypes.array,
+    intervalName: PropTypes.string,
+    count: PropTypes.string,
+    time: PropTypes.string
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
