@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-const INTERVALS = [
-    { name: "break", defaultTime: "5" },
-    { name: "session", defaultTime: "25" }
-];
+// const INTERVALS = [
+//     { name: "break", defaultTime: "5" },
+//     { name: "session", defaultTime: "25" }
+// ];
 
 class App extends React.Component {
     constructor (props) {
@@ -29,8 +29,14 @@ class App extends React.Component {
     }
 
     render () {
+        const { intervals, currentInterval, currentCount, timeLeft } = this.state;
         return (
-            <PomodoroClock />
+            <PomodoroClock
+                intervals={intervals}
+                intervalName={currentInterval}
+                count={currentCount}
+                time={timeLeft}
+            />
         );
     }
 }
@@ -58,7 +64,7 @@ const Timers = ({ intervals }) => (
                     id={`${interval.name}-decrement`}
                     text="<"
                 />
-                <div id={`${interval.name}-length`}> {interval.defaultTime} </div>
+                <div id={`${interval.name}-length`}> {interval.time} </div>
                 <SetTimeButton
                     id={`${interval.name}-increment`}
                     text=">"
@@ -115,12 +121,12 @@ const PomodoroClock = ({ intervals, intervalName, count, time }) => (
     <div id="clock">
         <h1>Pomodoro Clock</h1>
         <Timers
-            intervals={INTERVALS}
+            intervals={intervals}
         />
         <CountAndTimeDisplay
-            intervalName="Session"
-            count="0"
-            time="25:00"
+            intervalName={intervalName}
+            count={count}
+            time={time}
         />
         <Controls />
     </div>
