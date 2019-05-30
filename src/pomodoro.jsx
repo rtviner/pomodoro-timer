@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import PropTypes from 'prop-types';
+import '@fortawesome/fontawesome-free/js/solid';
+import './style.css';
 
 const INTERVALS = [
     { name: "break", defaultTime: "5" },
@@ -24,7 +27,7 @@ const SetTimeButton = ({ id, text }) => (
     </button>
 );
 
-const Timers = ({ intervals, time }) => (
+const Timers = ({ intervals }) => (
     <div className="interaction">
         {intervals.map(interval => (
             <div className="timer" id={`${interval.name}-label`}>
@@ -43,10 +46,50 @@ const Timers = ({ intervals, time }) => (
     </div>
 );
 
-const PomodoroClock = ({ intervals, time }) => (
+const MainDisplay = ({ intervalName, count, time }) => (
+    <div mainDisplay>
+        <h2
+            id="timer-label"
+        >
+            {intervalName}
+        </h2>
+        <h4 id="counter">
+            {count}
+        </h4>
+        <h3 id="time-left">
+            {time}
+        </h3>
+    </div>
+);
+
+const Controls = () => (
+    <div>
+        <button
+            id="start_stop"
+        >
+            <i className="fa fa-play" aria-hidden="true"/>
+            <i className="fa fa-pause" aria-hidden="true"/>
+        </button>
+        <button
+            id="reset"
+        >
+            <i className="fa fa-refresh" aria-hidden="true"/>
+        </button>
+    </div>
+);
+
+const PomodoroClock = ({ intervals, intervalName, count, time }) => (
     <div id="clock">
         <h1>Pomodoro Clock</h1>
-        <Timers intervals={INTERVALS} time={time}/>
+        <Timers
+            intervals={INTERVALS}
+        />
+        <MainDisplay
+            intervalName="Session"
+            count="0"
+            time="25:00"
+        />
+        <Controls />
     </div>
 );
 
