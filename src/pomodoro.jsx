@@ -14,14 +14,10 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            intervals: [{
-                name: "break",
-                time: "5"
+            intervals: {
+                break: "5",
+                session: "25"
             },
-            {
-                name: "session",
-                time: "25"
-            }],
             currentInterval: "session",
             currentCount: "0",
             timeLeft: "25:00"
@@ -31,8 +27,10 @@ class App extends React.Component {
     }
 
     setIntervalTime (event) {
-        const intervalName = event.target.id.split("-")[0];
-        console.log(intervalName);
+        const eventInfo = event.target.id.split("-");
+        // let newState = (eventInfo[1] === "increment") ?
+        console.log(eventInfo[0]);
+        console.log(eventInfo[1]);
     }
 
     render () {
@@ -67,17 +65,17 @@ SetTimeButton.propTypes = {
 
 const Timers = ({ intervals, onClick }) => (
     <div className="interaction">
-        {intervals.map(interval => (
-            <div key={interval.name} className="timer" id={`${interval.name}-label`}>
-                <h2>{interval.name.toUpperCase()}</h2>
-                <div id={`${interval.name}-length`}> {interval.time} </div>
+        {Object.keys(intervals).map(interval => (
+            <div key={interval} className="timer" id={`${interval}-label`}>
+                <h2>{interval.toUpperCase()}</h2>
+                <div id={`${interval}-length`}> {intervals[interval]} </div>
                 <SetTimeButton
-                    id={`${interval.name}-decrement`}
+                    id={`${interval}-decrement`}
                     text="<"
                     onClick={onClick}
                 />
                 <SetTimeButton
-                    id={`${interval.name}-increment`}
+                    id={`${interval}-increment`}
                     text=">"
                     onClick={onClick}
                 />
@@ -87,7 +85,7 @@ const Timers = ({ intervals, onClick }) => (
 );
 
 Timers.propTypes = {
-    intervals: PropTypes.array,
+    intervals: PropTypes.object,
     onClick: PropTypes.func
 };
 
@@ -147,7 +145,7 @@ const PomodoroClock = ({ intervals, intervalClick, intervalName, count, time }) 
 );
 
 PomodoroClock.propTypes = {
-    intervals: PropTypes.array,
+    intervals: PropTypes.object,
     intervalClick: PropTypes.func,
     intervalName: PropTypes.string,
     count: PropTypes.string,
