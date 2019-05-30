@@ -14,10 +14,8 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            intervals: {
-                break: "5",
-                session: "25"
-            },
+            breakTime: 5,
+            sessionTime: 25,
             currentInterval: "session",
             currentCount: "0",
             timeLeft: "25:00"
@@ -28,16 +26,19 @@ class App extends React.Component {
 
     setIntervalTime (event) {
         const eventInfo = event.target.id.split("-");
-        // let newState = (eventInfo[1] === "increment") ?
-        console.log(eventInfo[0]);
-        console.log(eventInfo[1]);
+        const name = eventInfo[0];
+        // (eventInfo[1] === "increment") ?
+        //     this.setState({ ${name}:
+
+        console.log(name);
     }
 
     render () {
-        const { intervals, currentInterval, currentCount, timeLeft } = this.state;
+        const { breakTime, sessionTime, currentInterval, currentCount, timeLeft } = this.state;
         return (
             <PomodoroClock
-                intervals={intervals}
+                interval1={breakTime}
+                interval2={sessionTime}
                 intervalClick={this.setIntervalTime}
                 intervalName={currentInterval.toUpperCase()}
                 count={currentCount}
@@ -63,29 +64,28 @@ SetTimeButton.propTypes = {
     text: PropTypes.string
 };
 
-const Timers = ({ intervals, onClick }) => (
+const Timer = ({ name, interval, onClick }) => (
     <div className="interaction">
-        {Object.keys(intervals).map(interval => (
-            <div key={interval} className="timer" id={`${interval}-label`}>
-                <h2>{interval.toUpperCase()}</h2>
-                <div id={`${interval}-length`}> {intervals[interval]} </div>
-                <SetTimeButton
-                    id={`${interval}-decrement`}
-                    text="<"
-                    onClick={onClick}
-                />
-                <SetTimeButton
-                    id={`${interval}-increment`}
-                    text=">"
-                    onClick={onClick}
-                />
-            </div>
-        ))}
+        <div className="timer" id={`${name}-label`}>
+            <h2>{name.toUpperCase()}</h2>
+            <div id={`${name}-length`}> {interval} </div>
+            <SetTimeButton
+                id={`${name}-decrement`}
+                text="<"
+                onClick={onClick}
+            />
+            <SetTimeButton
+                id={`${name}-increment`}
+                text=">"
+                onClick={onClick}
+            />
+        </div>
     </div>
 );
 
-Timers.propTypes = {
-    intervals: PropTypes.object,
+Timer.propTypes = {
+    name: PropTypes.string,
+    interval: PropTypes.number,
     onClick: PropTypes.func
 };
 
@@ -128,11 +128,17 @@ const Controls = () => (
 );
 
 
-const PomodoroClock = ({ intervals, intervalClick, intervalName, count, time }) => (
+const PomodoroClock = ({ interval1, interval2, intervalClick, intervalName, count, time }) => (
     <div id="clock">
         <h1>Pomodoro Clock</h1>
-        <Timers
-            intervals={intervals}
+        <Timer
+            name="break"
+            interval={interval1}
+            onClick={(event) => intervalClick(event)}
+        />
+        <Timer
+            name="session"
+            interval={interval2}
             onClick={(event) => intervalClick(event)}
         />
         <CountAndTimeDisplay
@@ -145,7 +151,8 @@ const PomodoroClock = ({ intervals, intervalClick, intervalName, count, time }) 
 );
 
 PomodoroClock.propTypes = {
-    intervals: PropTypes.object,
+    interval1: PropTypes.number,
+    interval2: PropTypes.number,
     intervalClick: PropTypes.func,
     intervalName: PropTypes.string,
     count: PropTypes.string,
