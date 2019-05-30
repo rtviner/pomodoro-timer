@@ -10,6 +10,24 @@ const INTERVALS = [
 ];
 
 class App extends React.Component {
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            intervals: [{
+                name: "break",
+                time: "5"
+            },
+            {
+                name: "session",
+                time: "25"
+            }],
+            currentInterval: "session",
+            currentCount: "0",
+            timeLeft: "25:00"
+        };
+    }
+
     render () {
         return (
             <PomodoroClock />
@@ -54,12 +72,12 @@ Timers.propTypes = {
     intervals: PropTypes.array
 };
 
-const CountAndTimeDisplay = ({ intervalName, count, time }) => (
+const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
     <div id="count-time-display">
         <h2
             id="timer-label"
         >
-            {intervalName}
+            {currentInterval}
         </h2>
         <h4 id="counter">
             {count}
@@ -71,7 +89,7 @@ const CountAndTimeDisplay = ({ intervalName, count, time }) => (
 );
 
 CountAndTimeDisplay.propTypes = {
-    intervalName: PropTypes.string,
+    currentInterval: PropTypes.string,
     count: PropTypes.string,
     time: PropTypes.string
 };
