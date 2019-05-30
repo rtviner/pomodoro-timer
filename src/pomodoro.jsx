@@ -4,11 +4,6 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-// const INTERVALS = [
-//     { name: "break", defaultTime: "5" },
-//     { name: "session", defaultTime: "25" }
-// ];
-
 class App extends React.Component {
     constructor (props) {
         super(props);
@@ -26,11 +21,14 @@ class App extends React.Component {
 
     setIntervalTime (event) {
         const eventInfo = event.target.id.split("-");
-        const name = eventInfo[0];
-        // (eventInfo[1] === "increment") ?
-        //     this.setState({ ${name}:
+        const name = `${eventInfo[0]}Time`;
+        const prevState = this.state[name];
 
-        console.log(name);
+        return (eventInfo[1] === "increment") ?
+            this.setState({ [name]: prevState + 1 }) :
+            this.setState({ [name]: prevState - 1 });
+
+        console.log(prevState);
     }
 
     render () {
