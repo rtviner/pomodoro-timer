@@ -41,7 +41,7 @@ class App extends React.Component {
             <PomodoroClock
                 intervals={intervals}
                 intervalClick={this.setIntervalTime}
-                intervalName={currentInterval}
+                intervalName={currentInterval.toUpperCase()}
                 count={currentCount}
                 time={timeLeft}
             />
@@ -70,12 +70,12 @@ const Timers = ({ intervals, onClick }) => (
         {intervals.map(interval => (
             <div key={interval.name} className="timer" id={`${interval.name}-label`}>
                 <h2>{interval.name.toUpperCase()}</h2>
+                <div id={`${interval.name}-length`}> {interval.time} </div>
                 <SetTimeButton
                     id={`${interval.name}-decrement`}
                     text="<"
                     onClick={onClick}
                 />
-                <div id={`${interval.name}-length`}> {interval.time} </div>
                 <SetTimeButton
                     id={`${interval.name}-increment`}
                     text=">"
@@ -138,7 +138,7 @@ const PomodoroClock = ({ intervals, intervalClick, intervalName, count, time }) 
             onClick={(event) => intervalClick(event)}
         />
         <CountAndTimeDisplay
-            intervalName={intervalName}
+            currentInterval={intervalName}
             count={count}
             time={time}
         />
