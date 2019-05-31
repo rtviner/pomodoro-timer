@@ -19,6 +19,7 @@ class App extends React.Component {
         };
 
         this.setIntervalTime = this.setIntervalTime.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     setIntervalTime (event) {
@@ -32,6 +33,11 @@ class App extends React.Component {
         if (eventInfo[1] === "decrement" && prevState > 1) {
             this.setState({ [name]: prevState - 1 });
         }
+    }
+
+    reset () {
+        this.setState({ breakTime: DEFAULT_BREAK_TIME });
+        this.setState({ sessionTime: DEFAULT_SESSION_TIME });
     }
 
     render () {
