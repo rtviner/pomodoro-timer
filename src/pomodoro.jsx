@@ -72,12 +72,12 @@ const Timer = ({ name, interval, onClick }) => (
             <div id={`${name}-length`}> {interval} </div>
             <SetTimeButton
                 id={`${name}-decrement`}
-                text="<"
+                text="-"
                 onClick={onClick}
             />
             <SetTimeButton
                 id={`${name}-increment`}
-                text=">"
+                text="+"
                 onClick={onClick}
             />
         </div>
