@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
+const DEFAULT_BREAK_TIME = 5;
+const DEFAULT_SESSION_TIME = 25;
 
 class App extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            breakTime: 5,
-            sessionTime: 25,
+            breakTime: DEFAULT_BREAK_TIME,
+            sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "session",
             currentCount: "0",
             timeLeft: "25:00"
@@ -24,11 +26,12 @@ class App extends React.Component {
         const name = `${eventInfo[0]}Time`;
         const prevState = this.state[name];
 
-        return (eventInfo[1] === "increment") ?
-            this.setState({ [name]: prevState + 1 }) :
+        if (eventInfo[1] === "increment" && prevState < 60) {
+            this.setState({ [name]: prevState + 1 });
+        }
+        if (eventInfo[1] === "decrement" && prevState > 1) {
             this.setState({ [name]: prevState - 1 });
-
-        console.log(prevState);
+        }
     }
 
     render () {
