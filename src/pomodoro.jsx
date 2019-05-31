@@ -37,14 +37,29 @@ class App extends React.Component {
     render () {
         const { breakTime, sessionTime, currentInterval, currentCount, timeLeft } = this.state;
         return (
-            <PomodoroClock
-                interval1={breakTime}
-                interval2={sessionTime}
-                intervalClick={this.setIntervalTime}
-                intervalName={currentInterval.toUpperCase()}
-                count={currentCount}
-                time={timeLeft}
-            />
+            <div id="clock">
+                <h1>Pomodoro Clock</h1>
+                <Timer
+                    name="break"
+                    interval={breakTime}
+                    setIntervalTime={this.setIntervalTime}
+
+                />
+                <Timer
+                    name="session"
+                    interval={sessionTime}
+                    setIntervalTime={this.setIntervalTime}
+                />
+                <CountAndTimeDisplay
+                    currentInterval={currentInterval}
+                    count={currentCount}
+                    time={timeLeft}
+                />
+                <Controls
+                    playPauseClick={this.playPause}
+                    resetClick={this.reset}
+                />
+            </div>
         );
     }
 }
@@ -65,7 +80,7 @@ SetTimeButton.propTypes = {
     text: PropTypes.string
 };
 
-const Timer = ({ name, interval, onClick }) => (
+const Timer = ({ name, interval, setIntervalTime }) => (
     <div className="interaction">
         <div className="timer" id={`${name}-label`}>
             <h2>{name.toUpperCase()}</h2>
@@ -73,12 +88,12 @@ const Timer = ({ name, interval, onClick }) => (
             <SetTimeButton
                 id={`${name}-decrement`}
                 text="-"
-                onClick={onClick}
+                onClick={(event) => setIntervalTime(event)}
             />
             <SetTimeButton
                 id={`${name}-increment`}
                 text="+"
-                onClick={onClick}
+                onClick={(event) => setIntervalTime(event)}
             />
         </div>
     </div>
@@ -87,7 +102,7 @@ const Timer = ({ name, interval, onClick }) => (
 Timer.propTypes = {
     name: PropTypes.string,
     interval: PropTypes.number,
-    onClick: PropTypes.func
+    setIntervalTime: PropTypes.func
 };
 
 const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
@@ -112,52 +127,22 @@ CountAndTimeDisplay.propTypes = {
     time: PropTypes.string
 };
 
-const Controls = () => (
+const Controls = ({ playPauseClick, resetClick }) => (
     <div>
         <button
             id="start_stop"
+            onClick={playPauseClick}
         >
             <i className="fa fa-play" aria-hidden="true"/>
             <i className="fa fa-pause" aria-hidden="true"/>
         </button>
         <button
             id="reset"
+            onClick={resetClick}
         >
             <i className="fa fa-refresh" aria-hidden="true"/>
         </button>
     </div>
 );
-
-
-const PomodoroClock = ({ interval1, interval2, intervalClick, intervalName, count, time }) => (
-    <div id="clock">
-        <h1>Pomodoro Clock</h1>
-        <Timer
-            name="break"
-            interval={interval1}
-            onClick={(event) => intervalClick(event)}
-        />
-        <Timer
-            name="session"
-            interval={interval2}
-            onClick={(event) => intervalClick(event)}
-        />
-        <CountAndTimeDisplay
-            currentInterval={intervalName}
-            count={count}
-            time={time}
-        />
-        <Controls />
-    </div>
-);
-
-PomodoroClock.propTypes = {
-    interval1: PropTypes.number,
-    interval2: PropTypes.number,
-    intervalClick: PropTypes.func,
-    intervalName: PropTypes.string,
-    count: PropTypes.string,
-    time: PropTypes.string
-};
 
 ReactDOM.render(<App />, document.getElementById('root'));
