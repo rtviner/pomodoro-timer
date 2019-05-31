@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 const DEFAULT_BREAK_TIME = 5;
 const DEFAULT_SESSION_TIME = 25;
+const DEFAULT_TIME = "00:00";
 
 class App extends React.Component {
     constructor (props) {
@@ -15,7 +16,7 @@ class App extends React.Component {
             sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "session",
             currentCount: "0",
-            timeLeft: "25:00"
+            timeLeft: DEFAULT_TIME
         };
 
         this.setIntervalTime = this.setIntervalTime.bind(this);
@@ -38,6 +39,7 @@ class App extends React.Component {
     reset () {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
+        this.setState({ timeLeft: DEFAULT_TIME });
     }
 
     render () {
@@ -150,5 +152,10 @@ const Controls = ({ playPauseClick, resetClick }) => (
         </button>
     </div>
 );
+
+Controls.propTypes = {
+    playPauseClick: PropTypes.func,
+    resetClick: PropTypes.func
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
