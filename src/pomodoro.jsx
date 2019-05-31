@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
+
 const DEFAULT_BREAK_TIME = 5;
 const DEFAULT_SESSION_TIME = 25;
-const DEFAULT_TIME = "00:00";
+const DEFAULT_TIME = "25:00";
 
 class App extends React.Component {
     constructor (props) {
@@ -16,7 +17,8 @@ class App extends React.Component {
             sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "Session",
             currentCount: "0",
-            timeLeft: DEFAULT_TIME
+            timeLeft: DEFAULT_TIME,
+            timerOn: false
         };
 
         this.setIntervalTime = this.setIntervalTime.bind(this);
@@ -40,6 +42,19 @@ class App extends React.Component {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
         this.setState({ timeLeft: DEFAULT_TIME });
+    }
+
+    playPause () {
+        const timerOn = this.state.timerOn;
+        // const timer = this.timer;
+        if (timerOn) {
+            console.log("timer is on");
+            //clear interval here...
+        } else {
+            console.log("timer is off");
+            //setTimeout here
+        }
+        this.setState({ timerOn: !this.state.timerOn });
     }
 
     render () {
@@ -96,12 +111,12 @@ const Timer = ({ name, interval, setIntervalTime }) => (
             <SetTimeButton
                 id={`${name}-decrement`}
                 text="-"
-                onClick={(event) => setIntervalTime(event)}
+                onClick={setIntervalTime}
             />
             <SetTimeButton
                 id={`${name}-increment`}
                 text="+"
-                onClick={(event) => setIntervalTime(event)}
+                onClick={setIntervalTime}
             />
         </div>
     </div>
