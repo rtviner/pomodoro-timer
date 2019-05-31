@@ -14,7 +14,7 @@ class App extends React.Component {
         this.state = {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
-            currentInterval: "session",
+            currentInterval: "Session",
             currentCount: "0",
             timeLeft: DEFAULT_TIME
         };
