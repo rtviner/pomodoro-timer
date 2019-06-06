@@ -79,11 +79,10 @@ class App extends React.Component {
         this.tick = setInterval(() => {
             const newTime = this.state.timerTime - 1;
             if (newTime >= 0) {
-                this.setState({ timerTime: newTime });
-            } else {
-                clearInterval(this.tick);
-                this.setState({ timerOn: false });
+                return this.setState({ timerTime: newTime });
             }
+            clearInterval(this.tick);
+            this.setState({ timerOn: false });
         }, 1000);
     };
 
