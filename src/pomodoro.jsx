@@ -6,7 +6,7 @@ import './style.css';
 
 const DEFAULT_BREAK_TIME = 5;
 const DEFAULT_SESSION_TIME = 25;
-const DEFAULT_TIME = "25:00";
+const DEFAULT_TIME = 25;
 
 // function soundAlarm () {
 //     console.log("alarm!");
@@ -26,15 +26,10 @@ class App extends React.Component {
             timerOn: false
         };
 
-
-        this.setIntervalTime = this.setIntervalTime.bind(this);
-
         this.playPause = this.playPause.bind(this);
-        this.reset = this.reset.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
+        this.resetTimer = this.resetTimer.bind(this);
         this.clock = this.clock.bind(this);
-        // this.tick = this.tick.bind(this);
-        // this.clearCountdown = this.clearCountdown.bind(this);
     }
 
     componentWillUnmount () {
@@ -54,19 +49,14 @@ class App extends React.Component {
         }
     }
 
-    setSeconds () {
-        console.log("seconds");
-    }
-
-    reset () {
+    resetTimer () {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
-        this.setState({ timerTime: DEFAULT_TIME });
+        this.setState({ seconds: DEFAULT_TIME });
     }
 
     playPause () {
         const { timerOn } = this.state;
-        console.log(timerOn);
 
         if (timerOn) {
             this.stopTimer();
@@ -92,19 +82,20 @@ class App extends React.Component {
         }, 1000);
     }
 
-    // clearCountdown = () => {
-    //     if (this.timer) {
-    //         clearTimeout(this.timer);
-    //     }
-    // }
-    // const secondsView = ((seonds % 60) >= 10) ?
+    // const { seconds } = this.state;
+    // let secondsView = ((seonds % 60) >= 10) ?
     //             seconds % 60 : `0${seconds % 60}`;
-    //         const countdownView = `${Math.floor(seconds / 60) ||
+    // let countdownView = `${Math.floor(seconds / 60) ||
     //         "00"}:${secondsView || "00"}`;
-    //         this.setState({ timerTime: countdownView });
 
     render () {
         const { breakTime, sessionTime, currentInterval, currentCount, seconds } = this.state;
+
+        let secondsView = ((seconds % 60) >= 10) ?
+            seconds % 60 : `0${seconds % 60}`;
+        let countdownView = `${Math.floor(seconds / 60) ||
+            "00"}:${secondsView || "00"}`;
+
         return (
             <div id="clock">
                 <h1>Pomodoro Clock</h1>
@@ -122,11 +113,11 @@ class App extends React.Component {
                 <CountAndTimeDisplay
                     currentInterval={currentInterval}
                     count={currentCount}
-                    time={seconds}
+                    time={countdownView}
                 />
                 <Controls
                     playPauseClick={this.playPause}
-                    resetClick={this.reset}
+                    resetClick={this.resetTimer}
                 />
             </div>
         );
@@ -193,7 +184,7 @@ const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
 CountAndTimeDisplay.propTypes = {
     currentInterval: PropTypes.string,
     count: PropTypes.string,
-    time: PropTypes.number
+    time: PropTypes.string
 };
 
 const Controls = ({ playPauseClick, resetClick }) => (
