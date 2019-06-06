@@ -21,24 +21,24 @@ class App extends React.Component {
             sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "Session",
             currentCount: "0",
-            currentTime: DEFAULT_TIME,
+            timerTime: DEFAULT_TIME,
+            seconds: 10,
             timerOn: false
         };
 
 
         this.setIntervalTime = this.setIntervalTime.bind(this);
-        this.reset = this.reset.bind(this);
-        this.playPause = this.playPause.bind(this);
-        this.countdown = this.countdown.bind(this);
-        this.tick = this.tick.bind(this);
-    }
 
-    componentDidMount () {
-        this.tick;
+        this.playPause = this.playPause.bind(this);
+        this.reset = this.reset.bind(this);
+        this.stopTimer = this.stopTimer.bind(this);
+        this.clock = this.clock.bind(this);
+        // this.tick = this.tick.bind(this);
+        // this.clearCountdown = this.clearCountdown.bind(this);
     }
 
     componentWillUnmount () {
-        clearTimeout(this.tick);
+        clearInterval(this.tick);
     }
 
     setIntervalTime (event) {
@@ -54,44 +54,57 @@ class App extends React.Component {
         }
     }
 
+    setSeconds () {
+        console.log("seconds");
+    }
+
     reset () {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
-        this.setState({ currentTime: DEFAULT_TIME });
+        this.setState({ timerTime: DEFAULT_TIME });
     }
 
     playPause () {
-        this.setState({ timerOn: !this.state.timerOn });
-        const timerOn = this.state.timerOn;
+        const { timerOn } = this.state;
         console.log(timerOn);
-        const currentInterval = this.state.currentInterval;
-        // const timer = this.timer;
-        if (!timerOn) {
-            const minutes = (currentInterval === "Session") ?
-                this.state.sessionTime :
-                this.state.intervalTime;
-            this.countdown(minutes, 0);
+
+        if (timerOn) {
+            this.stopTimer();
         } else {
-            clearTimeout(this.tick);
+            this.clock();
         }
     }
 
-    tick = (minutes, seconds) => {
-        setTimeout(() => {
-            let secondsView = ((seconds % 60) >= 10) ? seconds % 60 : `0${seconds % 60}`;
-            let countdownView = `${Math.floor(seconds / 60) || "00"}:${secondsView || "00"}`;
-            this.setState({ currentTime: countdownView });
-        }, 1000 * (minutes * 60 - seconds));
+    stopTimer = () => {
+        this.setState({ timerOn: false });
+        clearInterval(this.tick);
     }
 
-    countdown (min, sec) {
-        for (let seconds = (min * 60 + sec); seconds >= 0; seconds--) {
-            this.tick(min, seconds);
-        }
+    clock = () => {
+        this.setState({
+            timerOn: true
+        });
+
+        this.tick = setInterval(() => {
+            this.setState(prevState => ({
+                seconds: prevState.seconds - 1
+            }));
+        }, 1000);
     }
+
+    // clearCountdown = () => {
+    //     if (this.timer) {
+    //         clearTimeout(this.timer);
+    //     }
+    // }
+    // const secondsView = ((seonds % 60) >= 10) ?
+    //             seconds % 60 : `0${seconds % 60}`;
+    //         const countdownView = `${Math.floor(seconds / 60) ||
+    //         "00"}:${secondsView || "00"}`;
+    //         this.setState({ timerTime: countdownView });
 
     render () {
-        const { breakTime, sessionTime, currentInterval, currentCount, currentTime } = this.state;
+        const { breakTime, sessionTime, currentInterval, currentCount, seconds } = this.state;
         return (
             <div id="clock">
                 <h1>Pomodoro Clock</h1>
@@ -109,7 +122,7 @@ class App extends React.Component {
                 <CountAndTimeDisplay
                     currentInterval={currentInterval}
                     count={currentCount}
-                    time={currentTime}
+                    time={seconds}
                 />
                 <Controls
                     playPauseClick={this.playPause}
@@ -180,7 +193,7 @@ const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
 CountAndTimeDisplay.propTypes = {
     currentInterval: PropTypes.string,
     count: PropTypes.string,
-    time: PropTypes.string
+    time: PropTypes.number
 };
 
 const Controls = ({ playPauseClick, resetClick }) => (
