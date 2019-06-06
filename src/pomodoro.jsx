@@ -20,9 +20,8 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "Session",
-            currentCount: "0",
+            timerStart: 0,
             timerTime: DEFAULT_TIME,
-            seconds: 10,
             timerOn: false
         };
         this.setIntervalTime = this.setIntervalTime.bind(this);
@@ -52,7 +51,7 @@ class App extends React.Component {
     resetTimer () {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
-        this.setState({ seconds: DEFAULT_TIME });
+        this.setState({ timerTime: DEFAULT_TIME });
     }
 
     playPause () {
@@ -72,28 +71,28 @@ class App extends React.Component {
 
     clock = () => {
         this.setState({
-            timerOn: true
+            timerOn: true,
+            timerTime: this.state.timerTime,
+            timerStart: this.state.timerTime
         });
 
         this.tick = setInterval(() => {
-            this.setState(prevState => ({
-                seconds: prevState.seconds - 1
-            }));
+            const newTime = this.state.timerTime - 1;
+            if (newTime >= 0) {
+                this.setState({ timerTime: newTime });
+            } else {
+                clearInterval(this.tick);
+                this.setState({ timerOn: false });
+            }
         }, 1000);
-    }
-
-    // const { seconds } = this.state;
-    // let secondsView = ((seonds % 60) >= 10) ?
-    //             seconds % 60 : `0${seconds % 60}`;
-    // let countdownView = `${Math.floor(seconds / 60) ||
-    //         "00"}:${secondsView || "00"}`;
+    };
 
     render () {
-        const { breakTime, sessionTime, currentInterval, currentCount, seconds } = this.state;
+        const { breakTime, sessionTime, currentInterval, currentCount, timerTime } = this.state;
 
-        let secondsView = ((seconds % 60) >= 10) ?
-            seconds % 60 : `0${seconds % 60}`;
-        let countdownView = `${Math.floor(seconds / 60) ||
+        let secondsView = ((timerTime % 60) >= 10) ?
+            timerTime % 60 : `0${timerTime % 60}`;
+        let countdownView = `${Math.floor(timerTime / 60) ||
             "00"}:${secondsView || "00"}`;
 
         return (
