@@ -25,7 +25,7 @@ class App extends React.Component {
             seconds: 10,
             timerOn: false
         };
-
+        this.setIntervalTime = this.setIntervalTime.bind(this);
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
@@ -39,13 +39,13 @@ class App extends React.Component {
     setIntervalTime (event) {
         const eventInfo = event.target.id.split("-");
         const name = `${eventInfo[0]}Time`;
-        const prevState = this.state[name];
+        const intervalTime = this.state[name];
 
-        if (eventInfo[1] === "increment" && prevState < 60) {
-            this.setState({ [name]: prevState + 1 });
+        if (eventInfo[1] === "increment" && intervalTime < 60) {
+            this.setState({ [name]: intervalTime + 1 });
         }
-        if (eventInfo[1] === "decrement" && prevState > 1) {
-            this.setState({ [name]: prevState - 1 });
+        if (eventInfo[1] === "decrement" && intervalTime > 1) {
+            this.setState({ [name]: intervalTime - 1 });
         }
     }
 
