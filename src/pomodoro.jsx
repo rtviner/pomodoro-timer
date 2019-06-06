@@ -51,7 +51,8 @@ class App extends React.Component {
     resetTimer () {
         this.setState({ breakTime: DEFAULT_BREAK_TIME });
         this.setState({ sessionTime: DEFAULT_SESSION_TIME });
-        this.setState({ timerTime: DEFAULT_TIME });
+        const resetTime = (this.state.timerStart > 0) ? this.state.timerStart : DEFAULT_TIME;
+        this.setState({ timerTime: resetTime });
     }
 
     playPause () {
