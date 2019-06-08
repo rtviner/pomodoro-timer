@@ -34,24 +34,24 @@ class App extends React.Component {
     }
 
     setIntervalTime (event) {
-        // const { currentInterval } = this.state;
+        const { currentInterval } = this.state;
         const eventInfo = event.target.id.split("-");
         const name = `${eventInfo[0]}Time`;
         const intervalTime = this.state[name];
+        let newTime;
 
         if (eventInfo[1] === "increment" && intervalTime < 3600) {
-            let newTime = intervalTime + 60;
+            newTime = intervalTime + 60;
             this.setState({ [name]: newTime });
         }
         if (eventInfo[1] === "decrement" && intervalTime > 60) {
-            let newTime = intervalTime - 60;
+            newTime = intervalTime - 60;
             this.setState({ [name]: newTime });
         }
+        if (eventInfo[0] === currentInterval.toLowerCase()) {
+            this.setState({ timerTime: newTime });
+        }
     }
-
-    // setCurrentInterval () {
-
-    // }
 
     resetTimer () {
         this.stopTimer();
