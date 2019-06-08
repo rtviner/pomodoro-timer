@@ -6,7 +6,6 @@ import './style.css';
 
 const DEFAULT_BREAK_TIME = 300;
 const DEFAULT_SESSION_TIME = 1500;
-const DEFAULT_TIME = 10;
 
 class App extends React.Component {
     constructor (props) {
@@ -35,37 +34,32 @@ class App extends React.Component {
     }
 
     setIntervalTime (event) {
+        // const { currentInterval } = this.state;
         const eventInfo = event.target.id.split("-");
         const name = `${eventInfo[0]}Time`;
         const intervalTime = this.state[name];
 
         if (eventInfo[1] === "increment" && intervalTime < 3600) {
-            this.setState({ [name]: intervalTime + 60 });
+            let newTime = intervalTime + 60;
+            this.setState({ [name]: newTime });
         }
         if (eventInfo[1] === "decrement" && intervalTime > 60) {
-            this.setState({ [name]: intervalTime - 60 });
+            let newTime = intervalTime - 60;
+            this.setState({ [name]: newTime });
         }
     }
-
-    // setTimerTime () {
-
-
-    //     this.setState({
-    //         timerTime: (currentInterval === "Session") ?
-    //             sessionTime : breakTime });
-
-    //     this.clock();
-    // }
 
     // setCurrentInterval () {
 
     // }
 
     resetTimer () {
-        this.setState({ breakTime: DEFAULT_BREAK_TIME });
-        this.setState({ sessionTime: DEFAULT_SESSION_TIME });
-        const resetTime = (this.state.timerStart > 0) ? this.state.timerStart : DEFAULT_TIME;
-        this.setState({ timerTime: resetTime });
+        this.stopTimer();
+        this.setState({
+            breakTime: DEFAULT_BREAK_TIME,
+            sessionTime: DEFAULT_SESSION_TIME,
+            timerTime: DEFAULT_SESSION_TIME
+        });
     }
 
     playPause () {
@@ -94,7 +88,6 @@ class App extends React.Component {
 
         this.tick = setInterval(() => {
             const newTime = this.state.timerTime - 1;
-            console.log(newTime);
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
