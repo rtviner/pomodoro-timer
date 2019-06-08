@@ -4,13 +4,9 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-const DEFAULT_BREAK_TIME = 5;
-const DEFAULT_SESSION_TIME = 25;
-const DEFAULT_TIME = 25;
-
-// function soundAlarm () {
-//     console.log("alarm!");
-// }
+const DEFAULT_BREAK_TIME = 300;
+const DEFAULT_SESSION_TIME = 1500;
+const DEFAULT_TIME = 1500;
 
 class App extends React.Component {
     constructor (props) {
@@ -20,6 +16,7 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             currentInterval: "Session",
+            currentCount: 0,
             timerStart: 0,
             timerTime: DEFAULT_TIME,
             timerOn: false
@@ -79,6 +76,7 @@ class App extends React.Component {
 
         this.tick = setInterval(() => {
             const newTime = this.state.timerTime - 1;
+            console.log(newTime);
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
@@ -100,13 +98,12 @@ class App extends React.Component {
                 <h1>Pomodoro Clock</h1>
                 <Timer
                     name="break"
-                    interval={breakTime}
+                    interval={breakTime / 60}
                     setIntervalTime={this.setIntervalTime}
-
                 />
                 <Timer
                     name="session"
-                    interval={sessionTime}
+                    interval={sessionTime / 60}
                     setIntervalTime={this.setIntervalTime}
                 />
                 <CountAndTimeDisplay
@@ -182,7 +179,7 @@ const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
 
 CountAndTimeDisplay.propTypes = {
     currentInterval: PropTypes.string,
-    count: PropTypes.string,
+    count: PropTypes.number,
     time: PropTypes.string
 };
 
