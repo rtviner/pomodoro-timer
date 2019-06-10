@@ -15,7 +15,7 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 0,
+            count: 1,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
             timerOn: false
@@ -58,7 +58,8 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             timerTime: DEFAULT_SESSION_TIME,
-            count: 0
+            interval: "Session",
+            count: 1
         });
     }
 
