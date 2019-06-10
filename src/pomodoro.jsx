@@ -15,7 +15,7 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 1,
+            count: 0,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
             timerOn: false
@@ -59,7 +59,7 @@ class App extends React.Component {
             sessionTime: DEFAULT_SESSION_TIME,
             timerTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 1
+            count: 0
         });
     }
 
@@ -93,9 +93,11 @@ class App extends React.Component {
                 return this.setState({ timerTime: newTime });
             }
             clearInterval(this.tick);
+            if (this.state.interval === "Session") {
+                this.setState({ count: this.state.count + 1 });
+            }
             this.setState({
                 timerOn: false,
-                count: this.state.count + 1,
                 interval: this.state.interval === "Session" ?
                     "Break" : "Session"
             });
