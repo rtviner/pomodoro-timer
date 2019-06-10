@@ -38,16 +38,16 @@ class App extends React.Component {
         const eventInfo = event.target.id.split("-");
         const name = `${eventInfo[0]}Time`;
         const intervalTime = this.state[name];
-        let newTime = intervalTime;
+        let newTime;
         if (eventInfo[1] === "increment" && intervalTime < 3600) {
-            newTime = newTime + 60;
+            newTime = intervalTime + 60;
             this.setState({ [name]: newTime });
         }
         if (eventInfo[1] === "decrement" && intervalTime > 60) {
-            newTime = newTime - 60;
+            newTime = intervalTime - 60;
             this.setState({ [name]: newTime });
         }
-        if (eventInfo[0] === interval.toLowerCase()) {
+        if (eventInfo[0] === interval.toLowerCase() && newTime) {
             this.setState({ timerTime: newTime });
         }
     }
