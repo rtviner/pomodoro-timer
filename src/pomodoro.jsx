@@ -14,8 +14,8 @@ class App extends React.Component {
         this.state = {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
-            currentInterval: "Session",
-            currentCount: 0,
+            interval: "Session",
+            count: 0,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
             timerOn: false
@@ -23,7 +23,7 @@ class App extends React.Component {
         this.setIntervalTime = this.setIntervalTime.bind(this);
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
-        // this.setCurrentInterval = this.setCurrentInterval.bind(this);
+        // this.setInterval = this.setInterval.bind(this);
         // this.setTimerTime = this.setTimerTime.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.clock = this.clock.bind(this);
@@ -34,21 +34,20 @@ class App extends React.Component {
     }
 
     setIntervalTime (event) {
-        const { currentInterval } = this.state;
+        const { interval } = this.state;
         const eventInfo = event.target.id.split("-");
         const name = `${eventInfo[0]}Time`;
         const intervalTime = this.state[name];
-        let newTime;
-
+        let newTime = intervalTime;
         if (eventInfo[1] === "increment" && intervalTime < 3600) {
-            newTime = intervalTime + 60;
+            newTime = newTime + 60;
             this.setState({ [name]: newTime });
         }
         if (eventInfo[1] === "decrement" && intervalTime > 60) {
-            newTime = intervalTime - 60;
+            newTime = newTime - 60;
             this.setState({ [name]: newTime });
         }
-        if (eventInfo[0] === currentInterval.toLowerCase()) {
+        if (eventInfo[0] === interval.toLowerCase()) {
             this.setState({ timerTime: newTime });
         }
     }
@@ -58,7 +57,8 @@ class App extends React.Component {
         this.setState({
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
-            timerTime: DEFAULT_SESSION_TIME
+            timerTime: DEFAULT_SESSION_TIME,
+            count: 0
         });
     }
 
@@ -78,7 +78,7 @@ class App extends React.Component {
     }
 
     clock = () => {
-        // const { currentInterval, sessionTime, breakTime } = this.state;
+        // const { interval, sessionTime, breakTime } = this.state;
         //need to setTimer time here....
         this.setState({
             timerOn: true,
@@ -92,12 +92,17 @@ class App extends React.Component {
                 return this.setState({ timerTime: newTime });
             }
             clearInterval(this.tick);
-            this.setState({ timerOn: false });
+            this.setState({
+                timerOn: false,
+                count: this.state.count + 1,
+                interval: this.state.interval === "Session" ?
+                    "Break" : "Session"
+            });
         }, 1000);
     };
 
     render () {
-        const { breakTime, sessionTime, currentInterval, currentCount, timerTime } = this.state;
+        const { breakTime, sessionTime, interval, count, timerTime } = this.state;
 
         let secondsView = ((timerTime % 60) >= 10) ?
             timerTime % 60 : `0${timerTime % 60}`;
@@ -120,8 +125,8 @@ class App extends React.Component {
                     setIntervalTime={this.setIntervalTime}
                 />
                 <CountAndTimeDisplay
-                    currentInterval={currentInterval}
-                    count={currentCount}
+                    currentInterval={interval}
+                    count={count}
                     time={countdownView}
                 />
                 <Controls
