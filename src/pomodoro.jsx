@@ -26,7 +26,7 @@ class App extends React.Component {
         this.setIntervalTime = this.setIntervalTime.bind(this);
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
-        // this.switchInterval = this.switchInterval.bind(this);
+        this.switchInterval = this.switchInterval.bind(this);
         this.longBreak = this.longBreak.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.clock = this.clock.bind(this);
@@ -82,6 +82,21 @@ class App extends React.Component {
         clearInterval(this.tick);
     }
 
+    switchInterval () {
+        if (this.state.interval === "Session") {
+            this.setState({
+                count: this.state.count + 1,
+                interval: "Break",
+                timerTime: this.state.breakTime
+            });
+        } else {
+            this.setState({
+                interval: "Session",
+                timerTime: this.state.sessionTime
+            });
+        }
+    }
+
     longBreak () {
         this.setState({
             count: 0,
@@ -99,40 +114,12 @@ class App extends React.Component {
             timerTime: this.state.timerTime,
             timerStart: this.state.timerTime
         });
-        // const switchInterval = () => {
-        //     console.log("switchInterval has been called");
-        //     if (this.state.interval === "Session") {
-        //         this.setState({
-        //             count: this.state.count + 1,
-        //             interval: "Break",
-        //             timerTime: this.state.breakTime
-        //         });
-        //     } else {
-        //         this.setState({
-        //             interval: "Session",
-        //             timerTime: this.state.sessionTime
-        //         });
-        //     }
-        // };
-
         this.tick = setInterval(() => {
             let newTime = this.state.timerTime - 1;
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
-            } else if (newTime <= 0) {
-                if (this.state.interval === "Session") {
-                    this.setState({
-                        interval: "Break",
-                        timerTime: this.state.breakTime
-                    });
-                } else {
-                    this.setState({
-                        interval: "Session",
-                        timerTime: this.state.sessionTime
-                    });
-                }
-                newTime = this.state.timerTime - 1;
             }
+            this.switchInterval();
         }, 1000);
     };
 
