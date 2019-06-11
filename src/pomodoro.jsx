@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-const DEFAULT_BREAK_TIME = 300;
-const DEFAULT_SESSION_TIME = 1500;
+// const DEFAULT_BREAK_TIME = 300;
+// const DEFAULT_SESSION_TIME = 1500;
+
+const DEFAULT_BREAK_TIME = 60;
+const DEFAULT_SESSION_TIME = 60;
 
 class App extends React.Component {
     constructor (props) {
@@ -15,7 +18,7 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 0,
+            count: 3,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
             timerOn: false
@@ -23,8 +26,8 @@ class App extends React.Component {
         this.setIntervalTime = this.setIntervalTime.bind(this);
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
-        // this.setInterval = this.setInterval.bind(this);
-        // this.setTimerTime = this.setTimerTime.bind(this);
+        this.switchInterval = this.switchInterval.bind(this);
+        this.longBreak = this.longBreak.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.clock = this.clock.bind(this);
     }
@@ -78,6 +81,39 @@ class App extends React.Component {
         clearInterval(this.tick);
     }
 
+    switchInterval () {
+        if (this.state.interval === "Session") {
+            if (this.state.count === 3) {
+                this.setState({
+                    count: 0,
+                    interval: "Break",
+                    timerTime: 120
+                });
+            } else {
+                this.setState({
+                    count: this.state.count + 1,
+                    interval: "Break",
+                    timerTime: this.state.breakTime
+                });
+            }
+        } else {
+            this.setState({
+                interval: "Session",
+                timerTime: this.state.sessionTime
+            });
+        }
+        this.clock();
+    }
+
+    longBreak () {
+        this.setState({
+            count: 0,
+            interval: "Break",
+            timerTime: 120
+        });
+        this.clock();
+    }
+
     clock = () => {
         // const { interval, sessionTime, breakTime } = this.state;
         //need to setTimer time here....
@@ -92,15 +128,10 @@ class App extends React.Component {
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
-            clearInterval(this.tick);
-            if (this.state.interval === "Session") {
-                this.setState({ count: this.state.count + 1 });
+            if (this.state.count <= 4) {
+                this.switchInterval();
             }
-            this.setState({
-                timerOn: false,
-                interval: this.state.interval === "Session" ?
-                    "Break" : "Session"
-            });
+            clearInterval(this.tick);
         }, 1000);
     };
 
