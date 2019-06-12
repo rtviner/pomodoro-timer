@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 import soundfile from './winkSound.mp3';
+
 const DEFAULT_BREAK_TIME = 300;
 const DEFAULT_SESSION_TIME = 1500;
-
-// const DEFAULT_BREAK_TIME = 10;
-// const DEFAULT_SESSION_TIME = 10;
 
 class App extends React.Component {
     constructor (props) {
@@ -95,10 +93,18 @@ class App extends React.Component {
     }
 
     updateCount () {
+        const { interval } = this.state;
         let newCount = this.state.count + 1;
-        this.setState({
-            count: newCount
-        });
+        if (interval === "Break" && newCount > 4) {
+            this.setState({
+                count: 0
+            });
+        }
+        if (interval === "Session") {
+            this.setState({
+                count: newCount
+            });
+        }
     }
 
     countdown = () => {
@@ -109,8 +115,8 @@ class App extends React.Component {
         });
         this.tick = setInterval(() => {
             let newTime = this.state.timerTime - 1;
-            if (newTime === 0) this.audio.play();
-            if (newTime === 0 && this.state.interval === "Session") {
+            if (newTime === 0) {
+                this.audio.play();
                 this.updateCount();
             }
             if (newTime >= 0) {
