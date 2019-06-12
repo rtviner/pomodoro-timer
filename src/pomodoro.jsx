@@ -29,7 +29,7 @@ class App extends React.Component {
         this.switchInterval = this.switchInterval.bind(this);
         this.longBreak = this.longBreak.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
-        this.clock = this.clock.bind(this);
+        this.countdown = this.countdown.bind(this);
     }
 
     componentWillUnmount () {
@@ -69,12 +69,8 @@ class App extends React.Component {
     }
 
     playPause () {
-        const { timerOn } = this.state;
-        if (timerOn) {
-            this.stopTimer();
-        } else {
-            this.clock();
-        }
+        if (this.state.timerOn) this.stopTimer();
+        else this.countdown();
     }
 
     stopTimer = () => {
@@ -103,10 +99,10 @@ class App extends React.Component {
             interval: "Break",
             timerTime: 120
         });
-        this.clock();
+        this.countdown();
     }
 
-    clock = () => {
+    countdown = () => {
         this.setState({
             timerOn: true,
             timerTime: this.state.timerTime,
@@ -114,9 +110,7 @@ class App extends React.Component {
         });
         this.tick = setInterval(() => {
             let newTime = this.state.timerTime - 1;
-            if (newTime === 0) {
-                this.audio.play();
-            }
+            if (newTime === 0) this.audio.play();
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
