@@ -93,17 +93,10 @@ class App extends React.Component {
     }
 
     updateCount () {
-        const { interval } = this.state;
         let newCount = this.state.count + 1;
-        if (interval === "Break" && newCount > 4) {
-            this.setState({
-                count: 0
-            });
-        }
-        if (interval === "Session") {
-            this.setState({
-                count: newCount
-            });
+        if (newCount > 4) this.setState({ count: 0 });
+        if (this.state.interval === "Session") {
+            this.setState({ count: newCount });
         }
     }
 
