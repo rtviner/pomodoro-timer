@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-const DEFAULT_BREAK_TIME = 300;
-const DEFAULT_SESSION_TIME = 1500;
+// const DEFAULT_BREAK_TIME = 300;
+// const DEFAULT_SESSION_TIME = 1500;
 
-// const DEFAULT_BREAK_TIME = 60;
-// const DEFAULT_SESSION_TIME = 60;
+const DEFAULT_BREAK_TIME = 60;
+const DEFAULT_SESSION_TIME = 60;
 
 class App extends React.Component {
     constructor (props) {
@@ -149,6 +149,10 @@ class App extends React.Component {
                     currentInterval={interval}
                     count={count}
                     time={countdownView}
+                />
+                <audio
+                    src="./winkSound.mp3"
+                    id="beep"
                 />
                 <Controls
                     playPauseClick={this.playPause}
