@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
-
-// const DEFAULT_BREAK_TIME = 300;
-// const DEFAULT_SESSION_TIME = 1500;
-
-const DEFAULT_BREAK_TIME = 60;
-const DEFAULT_SESSION_TIME = 60;
+import soundfile from './winkSound.mp3';
+const DEFAULT_BREAK_TIME = 300;
+const DEFAULT_SESSION_TIME = 1500;
+const audio = document.getElementById('beep');
+// const DEFAULT_BREAK_TIME = 60;
+// const DEFAULT_SESSION_TIME = 60;
 
 class App extends React.Component {
     constructor (props) {
@@ -26,6 +26,7 @@ class App extends React.Component {
         this.setIntervalTime = this.setIntervalTime.bind(this);
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
+        this.playAudio = this.playAudio.bind(this);
         this.switchInterval = this.switchInterval.bind(this);
         this.longBreak = this.longBreak.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
@@ -64,6 +65,7 @@ class App extends React.Component {
             interval: "Session",
             count: 0
         });
+        audio.currentTime = 0;
     }
 
     playPause () {
@@ -79,6 +81,11 @@ class App extends React.Component {
     stopTimer = () => {
         this.setState({ timerOn: false });
         clearInterval(this.tick);
+    }
+
+    playAudio () {
+        audio.currentTime = 0;
+        audio.play();
     }
 
     switchInterval () {
@@ -116,6 +123,7 @@ class App extends React.Component {
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
+            this.playAudio();
             this.switchInterval();
         }, 1000);
     };
@@ -151,7 +159,7 @@ class App extends React.Component {
                     time={countdownView}
                 />
                 <audio
-                    src="./winkSound.mp3"
+                    src={soundfile}
                     id="beep"
                 />
                 <Controls
