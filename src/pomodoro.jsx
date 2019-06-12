@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 
-// const DEFAULT_BREAK_TIME = 300;
-// const DEFAULT_SESSION_TIME = 1500;
+const DEFAULT_BREAK_TIME = 300;
+const DEFAULT_SESSION_TIME = 1500;
 
-const DEFAULT_BREAK_TIME = 60;
-const DEFAULT_SESSION_TIME = 60;
+// const DEFAULT_BREAK_TIME = 60;
+// const DEFAULT_SESSION_TIME = 60;
 
 class App extends React.Component {
     constructor (props) {
@@ -77,7 +77,6 @@ class App extends React.Component {
     }
 
     stopTimer = () => {
-        console.log("stop timer has been called");
         this.setState({ timerOn: false });
         clearInterval(this.tick);
     }
@@ -107,8 +106,6 @@ class App extends React.Component {
     }
 
     clock = () => {
-        // const { interval, sessionTime, breakTime } = this.state;
-        //need to setTimer time here....
         this.setState({
             timerOn: true,
             timerTime: this.state.timerTime,
@@ -125,10 +122,12 @@ class App extends React.Component {
 
     render () {
         const { breakTime, sessionTime, interval, count, timerTime } = this.state;
-
+        let minutesView = (Math.floor(timerTime / 60)) >= 10 ?
+            Math.floor(timerTime / 60) :
+            `0${Math.floor(timerTime / 60)}`;
         let secondsView = ((timerTime % 60) >= 10) ?
             timerTime % 60 : `0${timerTime % 60}`;
-        let countdownView = `${Math.floor(timerTime / 60) ||
+        let countdownView = `${minutesView ||
             "00"}:${secondsView || "00"}`;
 
         return (
