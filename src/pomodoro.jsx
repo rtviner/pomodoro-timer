@@ -7,8 +7,8 @@ import soundfile from './winkSound.mp3';
 const DEFAULT_BREAK_TIME = 300;
 const DEFAULT_SESSION_TIME = 1500;
 
-// const DEFAULT_BREAK_TIME = 60;
-// const DEFAULT_SESSION_TIME = 60;
+// const DEFAULT_BREAK_TIME = 10;
+// const DEFAULT_SESSION_TIME = 10;
 
 class App extends React.Component {
     constructor (props) {
@@ -18,7 +18,7 @@ class App extends React.Component {
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 3,
+            count: 0,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
             timerOn: false
@@ -27,7 +27,7 @@ class App extends React.Component {
         this.playPause = this.playPause.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
         this.switchInterval = this.switchInterval.bind(this);
-        this.longBreak = this.longBreak.bind(this);
+        this.updateCount = this.updateCount.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.countdown = this.countdown.bind(this);
     }
@@ -80,10 +80,11 @@ class App extends React.Component {
 
     switchInterval () {
         if (this.state.interval === "Session") {
+            let newBreakTime = (this.state.count === 4) ?
+                1800 : this.state.breakTime;
             this.setState({
-                count: this.state.count + 1,
                 interval: "Break",
-                timerTime: this.state.breakTime
+                timerTime: newBreakTime
             });
         } else {
             this.setState({
@@ -93,13 +94,11 @@ class App extends React.Component {
         }
     }
 
-    longBreak () {
+    updateCount () {
+        let newCount = this.state.count + 1;
         this.setState({
-            count: 0,
-            interval: "Break",
-            timerTime: 120
+            count: newCount
         });
-        this.countdown();
     }
 
     countdown = () => {
@@ -111,6 +110,9 @@ class App extends React.Component {
         this.tick = setInterval(() => {
             let newTime = this.state.timerTime - 1;
             if (newTime === 0) this.audio.play();
+            if (newTime === 0 && this.state.interval === "Session") {
+                this.updateCount();
+            }
             if (newTime >= 0) {
                 return this.setState({ timerTime: newTime });
             }
