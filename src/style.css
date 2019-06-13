@@ -3,6 +3,8 @@ body {
 	margin: 0 auto;
 	font-family: arial;
 	text-align: center;
+	background-color: #2f2f2f;
+	color: #D3D3D3;
 }
 
 div#clock {
@@ -14,6 +16,7 @@ h1 {
 	font-size: 2em;
 	margin-top: 2em;
 	margin-bottom: 0;
+	color:#D8412C;
 }
 
 div#timers {
@@ -44,6 +47,9 @@ div.interactions {
 
 button {
 	border-radius: 5px;
+	border: 1px solid #D8412C;
+	background-color:#D8412C;
+	color: #D3D3D3;
 }
 
 div.increment {
@@ -62,6 +68,7 @@ button.lengthBtn {
 	font-size: 1em;
 	width: 1.75em;
 	height: 1.75em;
+	margin: 0.12em;
 }
 
 div#count-time-display {
@@ -71,6 +78,7 @@ div#count-time-display {
     font-size: 2em;
     border: 2.5px black solid;
     border-radius: 35px;
+    background-color: #424242;
 }
 
 h2#timer-label {
