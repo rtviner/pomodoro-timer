@@ -132,18 +132,20 @@ class App extends React.Component {
         return (
             <div id="clock">
                 <h1>Pomodoro Clock</h1>
-                <Timer
-                    name="break"
-                    title="Break Length"
-                    interval={breakTime / 60}
-                    setIntervalTime={this.setIntervalTime}
-                />
-                <Timer
-                    name="session"
-                    title="Session Length"
-                    interval={sessionTime / 60}
-                    setIntervalTime={this.setIntervalTime}
-                />
+                <div id="timers">
+                    <Timer
+                        name="break"
+                        title="Break Length"
+                        interval={breakTime / 60}
+                        setIntervalTime={this.setIntervalTime}
+                    />
+                    <Timer
+                        name="session"
+                        title="Session Length"
+                        interval={sessionTime / 60}
+                        setIntervalTime={this.setIntervalTime}
+                    />
+                </div>
                 <CountAndTimeDisplay
                     currentInterval={interval}
                     count={count}
@@ -165,6 +167,7 @@ class App extends React.Component {
 
 const SetTimeButton = ({ id, onClick, text }) => (
     <button
+        className="lengthBtn"
         id={id}
         type="button"
         onClick={onClick}
@@ -180,20 +183,22 @@ SetTimeButton.propTypes = {
 };
 
 const Timer = ({ name, title, interval, setIntervalTime }) => (
-    <div className="interaction">
-        <div className="timer" id={`${name}-label`}>
-            <h2>{title}</h2>
+    <div className="timer" id={`${name}-label`}>
+        <h2>{title}</h2>
+        <div className="interactions">
             <div id={`${name}-length`}> {interval} </div>
-            <SetTimeButton
-                id={`${name}-decrement`}
-                text="-"
-                onClick={setIntervalTime}
-            />
-            <SetTimeButton
-                id={`${name}-increment`}
-                text="+"
-                onClick={setIntervalTime}
-            />
+            <div className="increment">
+                <SetTimeButton
+                    id={`${name}-increment`}
+                    text="+"
+                    onClick={setIntervalTime}
+                />
+                <SetTimeButton
+                    id={`${name}-decrement`}
+                    text="-"
+                    onClick={setIntervalTime}
+                />
+            </div>
         </div>
     </div>
 );
@@ -228,7 +233,7 @@ CountAndTimeDisplay.propTypes = {
 };
 
 const Controls = ({ playPauseClick, resetClick }) => (
-    <div>
+    <div className="controls">
         <button
             id="start_stop"
             onClick={playPauseClick}

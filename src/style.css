@@ -1,0 +1,86 @@
+body {
+	font: 16px;
+	margin: 0 auto;
+	font-family: arial;
+	text-align: center;
+}
+
+div#clock {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+div#timers {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1em;
+}
+
+div.timer {
+    padding: 2em;
+    padding-top: 1em;
+    width: 50%;
+}
+
+h2 {
+    margin-bottom: .25em;
+}
+
+div.interactions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+div.increment {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2em;
+}
+
+div#break-length, div#session-length {
+    font-size: 1.5em;
+    padding: 1em;
+}
+
+button.lengthBtn {
+	font-size: 1em;
+	width: 1.75em;
+	height: 1.75em;
+}
+
+div#count-time-display {
+    width: 100%;
+    font-size: 2em;
+}
+
+h2#timer-label {
+    display: inline-block;
+    padding-right: .5em;
+    margin: 0 auto;
+}
+
+h4#counter {
+    display: inline-block;
+    font-size: 1.25em;
+    padding: 0;
+    margin: 0;
+}
+
+h3#time-left {
+    margin: 0 auto;
+    font-size: 3.5em;
+}
+
+button#start_stop, button#reset {
+    font-size: 1em;
+    padding: .5em;
+    margin: .5em;
+    width: 3em;
+    height: 3em;
+}
