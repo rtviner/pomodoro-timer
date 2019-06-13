@@ -20,12 +20,11 @@ div#timers {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 1em;
+    padding: .5em;
 }
 
 div.timer {
-    padding: 2em;
-    padding-top: 1em;
+	padding: 1em 2em .5em 2em;
     width: 50%;
 }
 
@@ -41,6 +40,10 @@ div.interactions {
     align-content: center;
     width: 100%;
     margin: 0 auto;
+}
+
+button {
+	border-radius: 5px;
 }
 
 div.increment {
@@ -62,8 +65,12 @@ button.lengthBtn {
 }
 
 div#count-time-display {
-    width: 100%;
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: .25em;
     font-size: 2em;
+    border: 2.5px black solid;
+    border-radius: 35px;
 }
 
 h2#timer-label {
