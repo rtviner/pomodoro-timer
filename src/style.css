@@ -1,7 +1,7 @@
 body {
 	font: 16px;
 	margin: 0 auto;
-	font-family: arial;
+	font-family: 'Play', sans-serif;
 	text-align: center;
 	background-color: #2f2f2f;
 	color: #D3D3D3;
@@ -83,6 +83,7 @@ div#count-time-display {
 
 h2#timer-label {
     display: inline-block;
+    padding-top: .25em;
     padding-right: .5em;
     margin: 0 auto;
 }
