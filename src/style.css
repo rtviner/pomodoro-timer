@@ -29,6 +29,7 @@ div#timers {
 div.timer {
 	padding: 1em 2em .5em 2em;
     width: 50%;
+
 }
 
 h2 {
@@ -62,6 +63,7 @@ div.increment {
 div#break-length, div#session-length {
     font-size: 1.5em;
     padding: 1em;
+    width: 1.5em;
 }
 
 button.lengthBtn {
@@ -79,6 +81,12 @@ div#count-time-display {
     border: 2.5px black solid;
     border-radius: 35px;
     background-color: #424242;
+}
+.session {
+	color: #D3D3D3;
+}
+.break {
+	color: #2ECC51;
 }
 
 h2#timer-label {
