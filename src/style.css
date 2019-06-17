@@ -82,10 +82,10 @@ div#count-time-display {
     border-radius: 35px;
     background-color: #424242;
 }
-.session {
+div.Session {
 	color: #D3D3D3;
 }
-.break {
+div.Break {
 	color: #2ECC51;
 }
 

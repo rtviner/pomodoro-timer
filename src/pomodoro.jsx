@@ -147,6 +147,7 @@ class App extends React.Component {
                     />
                 </div>
                 <CountAndTimeDisplay
+                    className={interval}
                     currentInterval={interval}
                     count={count}
                     time={countdownView}
@@ -211,7 +212,7 @@ Timer.propTypes = {
 };
 
 const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
-    <div id="count-time-display">
+    <div id="count-time-display" className={currentInterval}>
         <h2
             id="timer-label"
         >
@@ -229,6 +230,7 @@ const CountAndTimeDisplay = ({ currentInterval, count, time }) => (
 CountAndTimeDisplay.propTypes = {
     currentInterval: PropTypes.string,
     count: PropTypes.number,
+    clas: PropTypes.string,
     time: PropTypes.string
 };
 
