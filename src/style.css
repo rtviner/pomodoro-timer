@@ -48,10 +48,19 @@ div.interactions {
 
 button {
 	border-radius: 5px;
-	border: 1px solid #D8412C;
+    border: 1px solid #B03220;
 	background-color:#D8412C;
 	color: #D3D3D3;
 }
+
+button:hover, button:focus {
+	color: #000;
+}
+
+button:active,  {
+	border: 1.5px solid #B03220;
+}
+
 
 div.increment {
 	display: flex;
@@ -73,6 +82,14 @@ button.lengthBtn {
 	height: 1.5em;
 	margin: 0.12em;
 	padding: 0;
+	box-shadow: 1.5px 2px 2px 0px #B03220;
+	transition-property: box-shadow;
+	transition-duration: 1s;
+}
+
+button.lengthBtn:active, button.lengthBtn:focus {
+	box-shadow: none;
+	outline: none;
 }
 
 div#count-time-display {
@@ -80,7 +97,7 @@ div#count-time-display {
     margin: 0 auto;
     margin-bottom: .25em;
     font-size: 2em;
-    border: 2.5px black solid;
+    border: 2.5px #000 solid;
     border-radius: 35px;
     background-color: #424242;
 }
