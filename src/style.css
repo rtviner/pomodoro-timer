@@ -116,4 +116,5 @@ button#start_stop, button#reset {
     margin: .5em;
     width: 2.75em;
     height: 2.75em;
+    border-radius: 50%;
 }
