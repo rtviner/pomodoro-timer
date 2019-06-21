@@ -2,14 +2,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 module.exports = {
-	devtool: 'inline-source-map',
 	entry: './src/pomodoro.jsx',
 	output: {
-		filename: 'main.js',
-		path: path.resolve(__dirname, './dist')	
+		filename: 'bundle.js',
+		path: path.resolve(__dirname, 'build')	
 	},
 	devServer: {
-		contentBase: './dist',
+		contentBase: './build',
 	},
 	module: {
 		rules: [
@@ -31,7 +30,7 @@ module.exports = {
 	mode: 'development',
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './index.html'
+			template: path.resolve('./index.html')
 		})
 	]
 };
