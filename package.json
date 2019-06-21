@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "dev": "webpack-dev-server --mode development",
+    "start": "node server.js",
+    "heroku-postbuild": "webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write \"src/**/*.jsx\"",
     "eslint-fix": "eslint --fix \"src/**/*.jsx\"",
