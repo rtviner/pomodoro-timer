@@ -19,6 +19,7 @@ class App extends React.Component {
             count: 0,
             timerStart: 0,
             timerTime: DEFAULT_SESSION_TIME,
+            intervalTime: DEFAULT_SESSION_TIME,
             timerOn: false
         };
         this.setIntervalTime = this.setIntervalTime.bind(this);
@@ -50,6 +51,7 @@ class App extends React.Component {
         }
         if (eventInfo[0] === interval.toLowerCase() && newTime) {
             this.setState({ timerTime: newTime });
+            this.setState({ intervalTime: newTime });
         }
     }
 
@@ -77,17 +79,20 @@ class App extends React.Component {
     }
 
     switchInterval () {
+        this.setState({ timerStart: new Date() });
         if (this.state.interval === "Session") {
             let newBreakTime = (this.state.count === 4) ?
                 1800 : this.state.breakTime;
             this.setState({
                 interval: "Break",
-                timerTime: newBreakTime
+                timerTime: newBreakTime,
+                intervalTime: newBreakTime
             });
         } else {
             this.setState({
                 interval: "Session",
-                timerTime: this.state.sessionTime
+                timerTime: this.state.sessionTime,
+                intervalTime: this.state.sessionTime
             });
         }
     }
@@ -103,19 +108,23 @@ class App extends React.Component {
     countdown = () => {
         this.setState({
             timerOn: true,
-            timerTime: this.state.timerTime,
-            timerStart: this.state.timerTime
+            intervalTime: this.state.timerTime,
+            timerStart: new Date()
         });
+
         this.tick = setInterval(() => {
-            let newTime = this.state.timerTime - 1;
-            if (newTime === 0) {
+            const { intervalTime } = this.state;
+            let currentTime = new Date();
+            let elapsedTime = Math.floor((currentTime - this.state.timerStart) / 1000);
+
+            if (elapsedTime === intervalTime) {
                 this.audio.play();
                 this.updateCount();
+                this.switchInterval();
             }
-            if (newTime >= 0) {
-                return this.setState({ timerTime: newTime });
+            if (elapsedTime <= intervalTime) {
+                return this.setState({ timerTime: intervalTime - elapsedTime });
             }
-            this.switchInterval();
         }, 1000);
     };
 
