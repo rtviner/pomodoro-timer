@@ -135,3 +135,9 @@ button#start_stop, button#reset {
     height: 2.75em;
     border-radius: 50%;
 }
+/*
+button#start_stop {
+    background-color: #2ECC51;
+    color: #000;
+    border: 1px solid #29b748;
+}*/

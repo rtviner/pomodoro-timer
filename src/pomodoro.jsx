@@ -5,8 +5,8 @@ import '@fortawesome/fontawesome-free/js/solid';
 import './style.css';
 import soundfile from './winkSound.mp3';
 
-const DEFAULT_BREAK_TIME = 300;
-const DEFAULT_SESSION_TIME = 1500;
+const DEFAULT_BREAK_TIME = 5;
+const DEFAULT_SESSION_TIME = 25;
 
 class App extends React.Component {
     constructor (props) {
@@ -17,9 +17,10 @@ class App extends React.Component {
             sessionTime: DEFAULT_SESSION_TIME,
             interval: "Session",
             count: 0,
-            timerStart: 0,
-            timerTime: DEFAULT_SESSION_TIME,
-            intervalTime: DEFAULT_SESSION_TIME,
+            timerEnd: 0,
+            minutes: DEFAULT_SESSION_TIME,
+            seconds: 0,
+            intervalTime: DEFAULT_SESSION_TIME * 60,
             timerOn: false
         };
         this.setIntervalTime = this.setIntervalTime.bind(this);
@@ -32,7 +33,7 @@ class App extends React.Component {
     }
 
     componentWillUnmount () {
-        clearInterval(this.tick);
+        clearTimeout(this.tick);
     }
 
     setIntervalTime (event) {
@@ -41,17 +42,17 @@ class App extends React.Component {
         const name = `${eventInfo[0]}Time`;
         const intervalTime = this.state[name];
         let newTime;
-        if (eventInfo[1] === "increment" && intervalTime < 3600) {
-            newTime = intervalTime + 60;
+        if (eventInfo[1] === "increment" && intervalTime < 60) {
+            newTime = intervalTime + 1;
             this.setState({ [name]: newTime });
         }
-        if (eventInfo[1] === "decrement" && intervalTime > 60) {
-            newTime = intervalTime - 60;
+        if (eventInfo[1] === "decrement" && intervalTime > 1) {
+            newTime = intervalTime - 1;
             this.setState({ [name]: newTime });
         }
         if (eventInfo[0] === interval.toLowerCase() && newTime) {
-            this.setState({ timerTime: newTime });
-            this.setState({ intervalTime: newTime });
+            this.setState({ minutes: newTime });
+            this.setState({ intervalTime: newTime * 60 });
         }
     }
 
@@ -62,9 +63,11 @@ class App extends React.Component {
         this.setState({
             breakTime: DEFAULT_BREAK_TIME,
             sessionTime: DEFAULT_SESSION_TIME,
-            timerTime: DEFAULT_SESSION_TIME,
             interval: "Session",
-            count: 0
+            count: 0,
+            minutes: DEFAULT_SESSION_TIME,
+            seconds: 0,
+            intervalTime: DEFAULT_SESSION_TIME * 60
         });
     }
 
@@ -75,26 +78,28 @@ class App extends React.Component {
 
     stopTimer = () => {
         this.setState({ timerOn: false });
-        clearInterval(this.tick);
+        clearTimeout(this.tick);
     }
 
     switchInterval () {
-        this.setState({ timerStart: new Date() });
         if (this.state.interval === "Session") {
             let newBreakTime = (this.state.count === 4) ?
-                1800 : this.state.breakTime;
+                30 : this.state.breakTime;
             this.setState({
                 interval: "Break",
-                timerTime: newBreakTime,
-                intervalTime: newBreakTime
+                minutes: newBreakTime,
+                seconds: 0,
+                intervalTime: newBreakTime * 60
             });
         } else {
             this.setState({
                 interval: "Session",
-                timerTime: this.state.sessionTime,
-                intervalTime: this.state.sessionTime
+                minutes: this.state.sessionTime,
+                seconds: 0,
+                intervalTime: this.state.sessionTime * 60
             });
         }
+        this.countdown();
     }
 
     updateCount () {
@@ -105,38 +110,46 @@ class App extends React.Component {
         }
     }
 
-    countdown = () => {
+    countdown () {
+        const { intervalTime } = this.state;
+        let endTime = (new Date()).getTime() + (intervalTime * 1000) + 500;
+
         this.setState({
             timerOn: true,
-            intervalTime: this.state.timerTime,
-            timerStart: new Date()
+            timerEnd: endTime
         });
 
-        this.tick = setInterval(() => {
-            const { intervalTime } = this.state;
-            let currentTime = new Date();
-            let elapsedTime = Math.floor((currentTime - this.state.timerStart) / 1000);
-
-            if (elapsedTime === intervalTime) {
-                this.audio.play();
+        const updateClock = () => {
+            let msLeft = endTime - (new Date()).getTime();
+            if (msLeft <= 0) {
+                if (this.audio.play() !== undefined) {
+                    this.audio.play()
+                        .then(_ => console.log("audio started"))
+                        .catch(err => console.log(err));
+                }
                 this.updateCount();
                 this.switchInterval();
             }
-            if (elapsedTime <= intervalTime) {
-                return this.setState({ timerTime: intervalTime - elapsedTime });
+            if (msLeft >= 0) {
+                let currentTime = new Date(msLeft);
+                this.setState({
+                    intervalTime: Math.floor(msLeft / 1000),
+                    minutes: currentTime.getUTCMinutes(),
+                    seconds: currentTime.getUTCSeconds()
+                });
+                this.tick = setTimeout(updateClock,
+                    currentTime.getUTCMilliseconds() + 500);
             }
-        }, 1000);
-    };
+        };
+        updateClock();
+    }
 
     render () {
-        const { breakTime, sessionTime, interval, count, timerTime } = this.state;
-        let minutesView = (Math.floor(timerTime / 60)) >= 10 ?
-            Math.floor(timerTime / 60) :
-            `0${Math.floor(timerTime / 60)}`;
-        let secondsView = ((timerTime % 60) >= 10) ?
-            timerTime % 60 : `0${timerTime % 60}`;
-        let countdownView = `${minutesView ||
-            "00"}:${secondsView || "00"}`;
+        const { breakTime, sessionTime, interval, count, minutes, seconds } = this.state;
+
+        let twoDigits = (time) => time >= 10 ?
+            time : `0${time}`;
+        let countdownView = `${twoDigits(minutes) || "00"}:${twoDigits(seconds) || "00"}`;
 
         return (
             <div id="clock">
@@ -145,13 +158,13 @@ class App extends React.Component {
                     <Timer
                         name="break"
                         title="Break Length"
-                        interval={breakTime / 60}
+                        interval={breakTime}
                         setIntervalTime={this.setIntervalTime}
                     />
                     <Timer
                         name="session"
                         title="Session Length"
-                        interval={sessionTime / 60}
+                        interval={sessionTime}
                         setIntervalTime={this.setIntervalTime}
                     />
                 </div>
