@@ -122,10 +122,12 @@ class App extends React.Component {
         const updateClock = () => {
             let msLeft = endTime - (new Date()).getTime();
             if (msLeft <= 0) {
-                if (this.audio.play() !== undefined) {
-                    this.audio.play()
-                        .then(_ => console.log("audio started"))
-                        .catch(err => console.log(err));
+                let playPromise = this.audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        console.log("audio started");
+                    })
+                        .catch(error => console.log(error));
                 }
                 this.updateCount();
                 this.switchInterval();
