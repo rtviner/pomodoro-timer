@@ -50,6 +50,7 @@ button {
     border: 1px solid #B03220;
 	background-color:#D8412C;
 	color: #D3D3D3;
+    touch-action: manipulation;
 }
 
 button:hover, button:focus {
